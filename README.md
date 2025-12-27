@@ -74,9 +74,10 @@ Built with a focus on **Asynchronous JS** and **API Handling**.
 
 | **Hero Section** | **Movie Rows** |
 |:---:|:---:|
-| <img src="https://via.placeholder.com/600x350.png?text=Hero+Banner+UI" alt="Hero Banner" width="100%"> | <img src="https://via.placeholder.com/600x350.png?text=Movie+Carousels" alt="Movie Rows" width="100%"> |
+| <img src="https://github.com/user-attachments/assets/348e24d7-f114-4bc9-b7b3-1751e732e569" alt="Hero Banner" width="100%"> | <img src="https://github.com/user-attachments/assets/e0780f45-4fc0-4653-8130-a0aba7434f2e" alt="Movie Rows" width="100%"> |
 
 ---
+
 
 ## 🚀 Getting Started
 
