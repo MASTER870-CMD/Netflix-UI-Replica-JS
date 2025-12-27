@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Netflix Clone</title>
+  <style>
+
+
+
+       body {
+      margin: 0;
+      background-color: #141414;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background-color: #111;
+    }
+
+    @media (min-width: 600px) {
+      header {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+      color: #e50914;
+    }
+
+    #search {
+      padding: 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      width: 90%;
+      max-width: 250px;
+    }
+
+    .category {
+      margin: 20px;
+    }
+
+    .category h2 {
+      margin-bottom: 12px;
+      font-size: 22px;
+    }
+
+    .row {
+      display: flex;
+      overflow-x: auto;
+      gap: 12px;
+      padding-bottom: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: #e50914 transparent;
+    }
+
+    .row::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .row::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .row::-webkit-scrollbar-thumb {
+      background-color: #e50914;
+      border-radius: 10px;
+      border: 2px solid #141414;
+    }
+
+    .item {
+      width: 45vw;
+      max-width: 160px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      .item {
+        width: 60vw;
+      }
+    }
+
+    .item img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-radius: 6px;
+      transition: transform 0.3s ease;
+    }
+
+    .item img:hover {
+      transform: scale(1.08);
+    }
+
+    .desc {
+      font-size: 13px;
+      margin-top: 5px;
+      color: #ccc;
+    }
+
+    .video-popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .video-popup iframe {
+      width: 100%;
+      max-width: 900px;
+      height: 56.25vw;
+      max-height: 80vh;
+      border: 3px solid white;
+      border-radius: 8px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NETFLIX</div>
+    <input type="text" id="search" placeholder="Search title or description..." />
+  </header>
+
+  <div id="content"></div>
+
+  <div class="video-popup" id="videoPopup">
+    <span class="close-btn" onclick="closeVideo()">&times;</span>
+    <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+
+  <script>
+    const data = {
+      "TV Shows": [
+        { title: "Dark", desc: "A German town with a time-travel twist.", video: "https://youtu.be/XmAzl4UdBTY?si=EuD98qXElTCGtvoZ" },
+
+
+        { title: "Stranger Things", desc: "Supernatural events in a small town.", video: "https://www.youtube.com/embed/b9EkMc79ZSU" },
+        { title: "Breaking Bad", desc: "Teacher turns meth kingpin.", video: "https://www.youtube.com/embed/HhesaQXLuRY" },
+        { title: "Money Heist", desc: "The biggest heist in Spain.", video: "https://www.youtube.com/embed/_InqQJRqGW4" },
+        { title: "The Crown", desc: "Queen Elizabeth's reign.", video: "https://www.youtube.com/embed/JWtnJjn6ng0" },
+        { title: "Peaky Blinders", desc: "Post-WWI gangster drama.", video: "https://www.youtube.com/embed/oVzVdvGIC7U" },
+       
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+
+        { title: "Manifest", desc: "Plane passengers reappear after 5 years.", video: "https://youtu.be/dTSf7sfACQg?si=lBn9vBCPV6cdoJCT" }
+      
+      ],
+      "Spanish Movies": [
+        { title: "Sky High", desc: "Criminal rise and fall.", video: "https://youtu.be/YvGIrx0qBwE?si=6lHEhjIX_pzKu4OV" },
+        { title: "Live is Life", desc: "Summer adventure of friends.", video: "https://youtu.be/utfgkPP0SGU?si=-y4_4j3fjrzDqXiu" },
+        { title: "Outlaws", desc: "Spanish biker gang story.", video: "https://youtu.be/YKzRPFvky9Y?si=ZHbClJ8W4tlhfBNE" },
+        { title: "The Platform", desc: "Deadly vertical prison.", video: "https://www.youtube.com/embed/RlfooqeZcdY" },
+        { title: "Below Zero", desc: "Police chase turns deadly.", video: "https://www.youtube.com/embed/Go8nTmfrQd8" },
+        { title: "The Occupant", desc: "A man obsessed with his old home.", video: "https://youtu.be/AzCAwdp1uIQ?si=u_AC7KdncetNaGMx" },
+        
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+
+        { title: "The Invisible Guest", desc: "Murder mystery in Spain.", video: "https://www.youtube.com/embed/epCg2RbyF80" }
+      ],
+      "Documentaries": [
+        { title: "Our Planet", desc: "Explore Earth's beauty.", video: "https://www.youtube.com/embed/aETNYyrqNYE" },
+        { title: "The Social Dilemma", desc: "Dangers of social media.", video: "https://www.youtube.com/embed/uaaC57tcci0" },
+        { title: "13th", desc: "Race & incarceration in US.", video: "https://www.youtube.com/embed/krfcq5pF8u8" },
+        { title: "The Great Hack", desc: "Data and democracy.", video: "https://www.youtube.com/embed/iX8GxLP1FHo" },
+        { title: "Seaspiracy", desc: "Impact of fishing industry.", video: "https://www.youtube.com/embed/1Q5CXN7soQg" },
+        { title: "My Octopus Teacher", desc: "Bond with a sea creature.", video: "https://www.youtube.com/embed/3s0LTDhqe5A" },
+        { title: "Night on Earth", desc: "Nature after dark.", video: "https://youtu.be/p81PafZ2d_8?si=6UEFQrL0ule5nvMx" },
+        { title: "Inside Job", desc: "Global financial crisis.", video: "https://www.youtube.com/embed/T2IaJwkqgPk" }
+      ],
+
+      "TV Shows 2": [
+        { title: "Dark", desc: "A German town with a time-travel twist.", video: "https://youtu.be/XmAzl4UdBTY?si=EuD98qXElTCGtvoZ" },
+        { title: "Stranger Things", desc: "Supernatural events in a small town.", video: "https://www.youtube.com/embed/b9EkMc79ZSU" },
+        { title: "Breaking Bad", desc: "Teacher turns meth kingpin.", video: "https://www.youtube.com/embed/HhesaQXLuRY" },
+        { title: "Money Heist", desc: "The biggest heist in Spain.", video: "https://www.youtube.com/embed/_InqQJRqGW4" },
+        { title: "The Crown", desc: "Queen Elizabeth's reign.", video: "https://www.youtube.com/embed/JWtnJjn6ng0" },
+        { title: "Peaky Blinders", desc: "Post-WWI gangster drama.", video: "https://www.youtube.com/embed/oVzVdvGIC7U" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "Manifest", desc: "Plane passengers reappear after 5 years.", video: "https://youtu.be/dTSf7sfACQg?si=lBn9vBCPV6cdoJCT" }
+      ],
+      "Spanish Movies 2": [
+        { title: "Sky High", desc: "Criminal rise and fall.", video: "https://youtu.be/YvGIrx0qBwE?si=6lHEhjIX_pzKu4OV" },
+        { title: "Live is Life", desc: "Summer adventure of friends.", video: "https://youtu.be/utfgkPP0SGU?si=-y4_4j3fjrzDqXiu" },
+        { title: "Outlaws", desc: "Spanish biker gang story.", video: "https://youtu.be/YKzRPFvky9Y?si=ZHbClJ8W4tlhfBNE" },
+        { title: "The Platform", desc: "Deadly vertical prison.", video: "https://www.youtube.com/embed/RlfooqeZcdY" },
+        { title: "Below Zero", desc: "Police chase turns deadly.", video: "https://www.youtube.com/embed/Go8nTmfrQd8" },
+        { title: "The Occupant", desc: "A man obsessed with his old home.", video: "https://youtu.be/AzCAwdp1uIQ?si=u_AC7KdncetNaGMx" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "The Invisible Guest", desc: "Murder mystery in Spain.", video: "https://www.youtube.com/embed/epCg2RbyF80" }
+      ], 
+      "Documentaries 2": [
+        { title: "Our Planet", desc: "Explore Earth's beauty.", video: "https://www.youtube.com/embed/aETNYyrqNYE" },
+        { title: "The Social Dilemma", desc: "Dangers of social media.", video: "https://www.youtube.com/embed/uaaC57tcci0" },
+        { title: "13th", desc: "Race & incarceration in US.", video: "https://www.youtube.com/embed/krfcq5pF8u8" },
+        { title: "The Great Hack", desc: "Data and democracy.", video: "https://www.youtube.com/embed/iX8GxLP1FHo" },
+        { title: "Seaspiracy", desc: "Impact of fishing industry.", video: "https://www.youtube.com/embed/1Q5CXN7soQg" },
+        { title: "My Octopus Teacher", desc: "Bond with a sea creature.", video: "https://www.youtube.com/embed/3s0LTDhqe5A" },
+        { title: "Night on Earth", desc: "Nature after dark.", video: "https://youtu.be/p81PafZ2d_8?si=6UEFQrL0ule5nvMx" },
+        { title: "Inside Job", desc: "Global financial crisis.", video: "https://www.youtube.com/embed/T2IaJwkqgPk" }
+      ],
+
+      "TV Shows 3": [
+        { title: "Dark", desc: "A German town with a time-travel twist.", video: "https://youtu.be/XmAzl4UdBTY?si=EuD98qXElTCGtvoZ" },
+        { title: "Stranger Things", desc: "Supernatural events in a small town.", video: "https://www.youtube.com/embed/b9EkMc79ZSU" },
+        { title: "Breaking Bad", desc: "Teacher turns meth kingpin.", video: "https://www.youtube.com/embed/HhesaQXLuRY" },
+        { title: "Money Heist", desc: "The biggest heist in Spain.", video: "https://www.youtube.com/embed/_InqQJRqGW4" },
+        { title: "The Crown", desc: "Queen Elizabeth's reign.", video: "https://www.youtube.com/embed/JWtnJjn6ng0" },
+        { title: "Peaky Blinders", desc: "Post-WWI gangster drama.", video: "https://www.youtube.com/embed/oVzVdvGIC7U" },
+        { title: "The Witcher", desc: "A monster hunter’s fate.", video: "https://www.youtube.com/embed/ndl1W4ltcmg" },
+        { title: "Manifest", desc: "Plane passengers reappear after 5 years.", video: "https://youtu.be/dTSf7sfACQg?si=lBn9vBCPV6cdoJCT" }
+      ],
+      "Spanish Movies 3": [
+        { title: "Sky High", desc: "Criminal rise and fall.", video: "https://youtu.be/YvGIrx0qBwE?si=6lHEhjIX_pzKu4OV" },
+        { title: "Live is Life", desc: "Summer adventure of friends.", video: "https://youtu.be/utfgkPP0SGU?si=-y4_4j3fjrzDqXiu" },
+        { title: "Outlaws", desc: "Spanish biker gang story.", video: "https://youtu.be/YKzRPFvky9Y?si=ZHbClJ8W4tlhfBNE" },
+        { title: "The Platform", desc: "Deadly vertical prison.", video: "https://www.youtube.com/embed/RlfooqeZcdY" },
+        { title: "Below Zero", desc: "Police chase turns deadly.", video: "https://www.youtube.com/embed/Go8nTmfrQd8" },
+        { title: "The Occupant", desc: "A man obsessed with his old home.", video: "https://youtu.be/AzCAwdp1uIQ?si=u_AC7KdncetNaGMx" },
+        { title: "Adú", desc: "A boy's journey across Africa.", video: "https://youtu.be/qvSJfR7_hQs?si=Ty7xtWBnVAM_rHR0" },
+        { title: "The Invisible Guest", desc: "Murder mystery in Spain.", video: "https://www.youtube.com/embed/epCg2RbyF80" }
+      ],
+      "Documentaries 3": [
+        { title: "Our Planet", desc: "Explore Earth's beauty.", video: "https://www.youtube.com/embed/aETNYyrqNYE" },
+        { title: "The Social Dilemma", desc: "Dangers of social media.", video: "https://www.youtube.com/embed/uaaC57tcci0" },
+        { title: "13th", desc: "Race & incarceration in US.", video: "https://www.youtube.com/embed/krfcq5pF8u8" },
+        { title: "The Great Hack", desc: "Data and democracy.", video: "https://www.youtube.com/embed/iX8GxLP1FHo" },
+        { title: "Seaspiracy", desc: "Impact of fishing industry.", video: "https://www.youtube.com/embed/1Q5CXN7soQg" },
+        { title: "My Octopus Teacher", desc: "Bond with a sea creature.", video: "https://www.youtube.com/embed/3s0LTDhqe5A" },
+        { title: "Night on Earth", desc: "Nature after dark.", video: "https://youtu.be/p81PafZ2d_8?si=6UEFQrL0ule5nvMx" },
+        { title: "Inside Job", desc: "Global financial crisis.", video: "https://www.youtube.com/embed/T2IaJwkqgPk" }
+      ],
+
+
+
+      
+
+   
+    };
+
+
+    
+
+    const content = document.getElementById("content");
+    for (let category in data) {
+      const section = document.createElement("section");
+      section.className = "category";
+      section.innerHTML = `<h2>${category}</h2><div class="row"></div>`;
+      const row = section.querySelector(".row");
+
+      data[category].forEach(item => {
+        const videoId = new URL(item.video).pathname.split("/").pop();
+        const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+        row.innerHTML += `
+          <div class="item" data-title="${item.title}" data-desc="${item.desc}" data-video="${item.video}">
+            <img src="${thumb}" alt="${item.title}">
+            <div class="desc">${item.desc}</div>
+          </div>`;
+      });
+
+      content.appendChild(section);
+    }
+
+    document.querySelectorAll(".item").forEach(item => {
+      item.addEventListener("click", () => {
+        const url = item.getAttribute("data-video") + "?autoplay=1";
+        document.getElementById("videoFrame").src = url;
+        document.getElementById("videoPopup").style.display = "flex";
+      });
+    });
+
+    function closeVideo() {
+      document.getElementById("videoPopup").style.display = "none";
+      document.getElementById("videoFrame").src = "";
+    }
+
+    document.getElementById("search").addEventListener("input", e => {
+      const val = e.target.value.toLowerCase();
+      document.querySelectorAll(".item").forEach(item => {
+        const title = item.dataset.title.toLowerCase();
+        const desc = item.dataset.desc.toLowerCase();
+        item.style.display = (title.includes(val) || desc.includes(val)) ? "block" : "none";
+      });
+    });
+  </script>
+</body>
+</html>
